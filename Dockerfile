@@ -1,6 +1,6 @@
-FROM php:8.2.7-fpm-alpine3.18
+FROM php:8.3.14-fpm-alpine3.20
 
-LABEL maintainer="Ric Harvey <ric@squarecows.com>"
+LABEL maintainer="Danail Stoilov <danail.stoilov@uxpereince.eu>"
 WORKDIR "/var/www/html"
 
 ENV php_conf /usr/local/etc/php-fpm.conf
