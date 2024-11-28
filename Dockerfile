@@ -152,6 +152,6 @@ ADD errors/ /var/www/errors
 VOLUME /var/www/html
 
 
-EXPOSE 443 8080
+EXPOSE 443 80
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
