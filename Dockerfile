@@ -1,6 +1,7 @@
 FROM php:8.2.7-fpm-alpine3.18
 
 LABEL maintainer="Ric Harvey <ric@squarecows.com>"
+WORKDIR "/var/www/html"
 
 ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
@@ -136,19 +137,21 @@ RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini && \
 
 
 # Add Scripts
-ADD scripts/start.sh /start.sh
+# ADD scripts/start.sh /start.sh
 ADD scripts/pull /usr/bin/pull
 ADD scripts/push /usr/bin/push
 ADD scripts/letsencrypt-setup /usr/bin/letsencrypt-setup
 ADD scripts/letsencrypt-renew /usr/bin/letsencrypt-renew
-RUN chmod 755 /usr/bin/pull && chmod 755 /usr/bin/push && chmod 755 /usr/bin/letsencrypt-setup && chmod 755 /usr/bin/letsencrypt-renew && chmod 755 /start.sh
+RUN chmod 755 /usr/bin/pull && \
+    chmod 755 /usr/bin/push && \
+    chmod 755 /usr/bin/letsencrypt-setup && \
+    chmod 755 /usr/bin/letsencrypt-renew
 
 # copy in code
-ADD src/ /var/www/html/
 ADD errors/ /var/www/errors
+VOLUME /var/www/html
 
 
-EXPOSE 443 80
+EXPOSE 443 8080
 
-WORKDIR "/var/www/html"
-CMD ["/start.sh"]
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
