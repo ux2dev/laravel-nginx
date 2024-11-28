@@ -5,7 +5,7 @@ This is a Dockerfile/image to build a container for Laravel apps using NGINX as 
 docker run -v "<your-project-folder>:/var/www/html" -p 80:80 443:443 ux2dev/laravel-nginx
 ```
 ## How to use it with sail?
-### Before
+### Before (docker-compose.yml)
 ```yml
 services:
     laravel.test:
@@ -35,7 +35,7 @@ services:
             - selenium
 ...
 ```
-### After
+### After (docker-compose.yml)
 ```yml
 services:
     laravel.test:
