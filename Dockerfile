@@ -86,7 +86,7 @@ RUN apk add --no-cache --virtual .sys-deps \
     php composer-setup.php --quiet --install-dir=/usr/bin --filename=composer && \
     rm composer-setup.php &&\
   #  pip3 install -U pip && \
-    pip3 install -U certbot && \
+    # pip3 install -U certbot && \
     mkdir -p /etc/letsencrypt/webrootauth && \
     apk del gcc musl-dev linux-headers libffi-dev augeas-dev python3-dev make autoconf && \
     apk del .sys-deps
@@ -135,7 +135,6 @@ RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini && \
 	    -e "s/;zend_extension=opcache/zend_extension=opcache/g" \
             /usr/local/etc/php/php.ini
 
-
 # Add Scripts
 # ADD scripts/start.sh /start.sh
 ADD scripts/pull /usr/bin/pull
@@ -151,6 +150,9 @@ RUN chmod 755 /usr/bin/pull && \
 ADD errors/ /var/www/errors
 VOLUME /var/www/html
 
+RUN addgroup -S sail && adduser -S sail -G sail
+
+# USER sail
 
 EXPOSE 443 80
 
