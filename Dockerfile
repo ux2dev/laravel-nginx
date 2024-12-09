@@ -136,7 +136,7 @@ RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini && \
             /usr/local/etc/php/php.ini
 
 # Add Scripts
-# ADD scripts/start.sh /start.sh
+ADD scripts/start.sh /usr/bin/start.sh
 ADD scripts/pull /usr/bin/pull
 ADD scripts/push /usr/bin/push
 ADD scripts/letsencrypt-setup /usr/bin/letsencrypt-setup
@@ -150,10 +150,11 @@ RUN chmod 755 /usr/bin/pull && \
 ADD errors/ /var/www/errors
 VOLUME /var/www/html
 
-RUN addgroup -S sail && adduser -S sail -G sail
+RUN addgroup -g 1000 sail
+RUN adduser -D -s /bin/bash -G sail -u 1337 sail
 
 # USER sail
 
 EXPOSE 443 80
 
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+CMD ["bash", "/usr/bin/start.sh"]
