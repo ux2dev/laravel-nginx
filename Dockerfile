@@ -63,20 +63,20 @@ RUN apk add --no-cache --virtual .sys-deps \
     zlib-dev \
     libxpm-dev \
     libpng \
-    libpng-dev && \
+    libpng-dev
   # Install PHP modules
-    docker-php-ext-configure gd \
+RUN docker-php-ext-configure gd \
       --enable-gd \
       --with-freetype \
       --with-jpeg && \
     docker-php-ext-install gd && \
     #  pip install --upgrade pip && \
-    docker-php-ext-install pdo_mysql mysqli pdo_sqlite pgsql pdo_pgsql exif intl xsl soap zip && \
+    docker-php-ext-install pdo_mysql mysqli pdo_sqlite pgsql pdo_pgsql exif intl xsl soap zip dom sockets pcntl bcmath && \
     pecl install -o -f xdebug && \
-    pecl install -o -f redis && \ 
-    pecl install -o -f mongodb && \
+    pecl install -o -f redis && \
+    # pecl install -o -f mongodb && \
     echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini && \
-    echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/mongodb.ini && \
+    # echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/mongodb.ini && \
     echo "zend_extension=xdebug" > /usr/local/etc/php/conf.d/xdebug.ini && \
     docker-php-source delete && \
     mkdir -p /var/www/app && \
@@ -150,8 +150,7 @@ RUN chmod 755 /usr/bin/pull && \
 ADD errors/ /var/www/errors
 VOLUME /var/www/html
 
-RUN addgroup -g 1000 sail
-RUN adduser -D -s /bin/bash -G sail -u 1337 sail
+RUN adduser -D -s /bin/bash -G nginx -u 1337 sail
 
 # USER sail
 
